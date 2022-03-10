@@ -47,12 +47,14 @@ document.addEventListener('keydown', (event) => {
     //starts the game
   } else if (key === 's') {
     gameStart = true
+  } else {
+    console.log('no key')
   }
 
   //check if enemy ships can move left, right or down
   const enemyInterval = setInterval(() => {
     for (let i = 0; i < 225; i++) {
-      if ((elements.enemyShips[0] % elements.width === 0 )) {
+      if ((elements.enemyShips[0] % elements.width === 0)) {
         moveEnemyShips = 'right'
         console.log(moveEnemyShips)
       } else if ((elements.enemyShips[elements.enemyShips.length - 1] % elements.width === elements.width - 1)) {
@@ -60,7 +62,13 @@ document.addEventListener('keydown', (event) => {
         console.log(moveEnemyShips)
       }
     }
-  }, 1000)
+  }, 500)
+
+  function moveShipsDown() {
+    elements.enemyShips.forEach(ship => elements.cells[ship].classList.remove('enemy-ship-image'))
+    elements.enemyShips = elements.enemyShips.map(ship => ship + elements.width)
+    elements.enemyShips.forEach(ship => elements.cells[ship].classList.add('enemy-ship-image'))
+  }
 
 
   // enemy ships automatic movement logic
@@ -78,16 +86,12 @@ document.addEventListener('keydown', (event) => {
       elements.enemyShips.unshift(elements.enemyShips[0] - 1)
       elements.enemyShips.forEach(ship => elements.cells[ship].classList.add('enemy-ship-image'))
       console.log(elements.enemyShips)
-    } else if (moveEnemyShips === 'down') {
-      elements.enemyShips.forEach(ship => elements.cells[ship].classList.remove('enemy-ship-image'))
-      elements.enemyShips = elements.enemyShips + elements.width
-      elements.enemyShips.forEach(ship => elements.cells[ship].classList.add('enemy-ship-image'))
     }
-  }, 1000)
+  }, 500)
 
   // move the player left and right
   if (movePlayer === 'left') {
-    elements.cells [elements.player].classList.remove('player-image')
+    elements.cells[elements.player].classList.remove('player-image')
     elements.player -= 1
     elements.cells[elements.player].classList.add('player-image')
     movePlayer = null
@@ -105,6 +109,22 @@ document.addEventListener('keydown', (event) => {
     console.log('fire command recognised')
     elements.playerLaser = elements.player - elements.width
     elements.cells[elements.playerLaser].classList.add('player-laser-image')
+    laserFiring()
+  }
+
+  function laserFiring() {
+    const laserFiringInterval = setInterval(() => {
+      if (firePlayerLaser === 'fire') {
+        elements.cells[elements.playerLaser].classList.remove('player-laser-image')
+        elements.playerLaser = elements.playerLaser - elements.width
+        elements.cells[elements.playerLaser].classList.add('player-laser-image')
+        for (let i = 0; i < 225; i++) {
+          if (elements.cells[elements.enemyShips] === elements.cells[elements.playerLaser]) {
+            console.log('thats a hit!')
+          }
+        }
+      }
+    }, 100)
   }
 
 })
