@@ -56,14 +56,21 @@ document.addEventListener('keydown', (event) => {
 
   //check if enemy ships can move left, right or down
 
-  const leftWall = (enemyShips[0] % width === 0)
-  const rightWall = (enemyShips[enemyShips.length - 1] % width === width - 1)
+
 
   const enemyInterval = setInterval(() => {
-    if (leftWall) {
+    const leftWall = (enemyShips[0] % width === 0)
+    const rightWall = (enemyShips[enemyShips.length - 1] % width === width - 1)
+    if (leftWall && direction === width) {
       direction = 1
-    } else if (rightWall) {
+      console.log('direction is ' + direction)
+    } else if (rightWall && direction === width) {
       direction = -1
+      console.log('direction is ' + direction)
+    }
+
+    if (leftWall && direction ===  - 1 || rightWall && direction === 1) {
+      direction = width
     }
     for (let i = 0; i < enemyShips.length; i++) {
       cells[enemyShips[i]].classList.remove('enemy-ship-image')
@@ -73,13 +80,7 @@ document.addEventListener('keydown', (event) => {
     }
     for (let i = 0; i < enemyShips.length; i++) {
       cells[enemyShips[i]].classList.add('enemy-ship-image')
-    }
-    
-    for (let i = 0; i < 225; i++) {
-      if (leftWall && direction === - 1 || rightWall && direction === 1) {
-        direction = width
-      }
-    }
+    }   
   }, 500)
 
   // enemy ships automatic movement logic
