@@ -7,7 +7,7 @@ const grid = document.querySelector('.grid')
 const width = 15
 let cells = []
 let player = []
-let playerLaser = null
+let playerLaser = []
 let enemyShips = []
 let enemyLaser = []
 let direction = 1
@@ -22,6 +22,7 @@ for (let index = 0; index < width ** 2; index++) {
 
 let movePlayer = null
 let firePlayerLaser = null
+// use for cutscenes
 let gameStart = false
 
 //add player to board
@@ -148,9 +149,19 @@ document.addEventListener('keydown', (event) => {
       for (let i = 0; i < player.length; i++) {
         if (cells[enemyLaser] === cells[player]) {
           console.log('player dead!')
+          clearInterval(enemyLaserFiringInterval)
+          gameOver()
+        } else if (enemyLaser > (width ** 2) - width - 1) {
+          console.log('remove laser')
+          cells[enemyLaser].classList.remove('player-laser-image')
+          clearInterval(enemyLaserFiringInterval)
         }
       }
     }, 200)
+
+    function gameOver() {
+      clearInterval(enemyInterval, enemyAttackSelectionInterval, enemyLaserFiringInterval)
+    }
 
 
   }
