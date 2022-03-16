@@ -25,3 +25,8 @@
 .enemy-ship-image {
   background-color: green;
 }
+
+.text-container {
+  display: flex;
+  flex-direction: row;
+}
