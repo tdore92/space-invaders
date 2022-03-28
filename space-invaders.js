@@ -50,14 +50,16 @@ document.addEventListener('keydown', (event) => {
   } else if (key === 'd' && !(player % width === width - 1)) {
     movePlayer = 'right'
     // command to fire laser
-  } else if (key === 'f') {
+  } else if (key === ' ') {
     firePlayerLaser = 'fire'
     //starts the game
   } else if (key === 's') {
     gameStart = true
+    console.log(gameStart)
   } else {
-    console.log('no key')
+    event.preventDefault()
   }
+
 
   // player movement logic
 
@@ -79,34 +81,42 @@ document.addEventListener('keydown', (event) => {
     console.log('fire command recognised')
     playerLaser = player - width
     cells[playerLaser].classList.add('player-laser-image')
+    firePlayerLaser = null
     laserFiring()
   }
+
+
 
   // player firing laser
 
   function laserFiring() {
     setInterval(() => {
-      if (firePlayerLaser === 'fire') {
-        cells[playerLaser].classList.remove('player-laser-image')
-        playerLaser = playerLaser - width
-        cells[playerLaser].classList.add('player-laser-image')
-      }
+
+      cells[playerLaser].classList.remove('player-laser-image')
+      playerLaser = playerLaser - width
+      cells[playerLaser].classList.add('player-laser-image')
+
       for (let i = 0; i < enemyShips.length; i++) {
         if (cells[playerLaser] === cells[enemyShips[i]]) {
           cells[playerLaser].classList.remove('player-laser-image')
           enemyShips.splice(i, 1)
           cells[enemyShips[i]].classList.remove('enemy-ship-image')
           clearInterval()
-          
+
         }
       }
-      
+
     }, 200)
   }
+})
 
-  //check if enemy ships can move left, right or down
 
-  const enemyInterval = setInterval(() => {
+//check if enemy ships can move left, right or down
+
+
+
+const enemyInterval = setInterval(() => {
+  if (gameStart === true) {
     const leftWall = (enemyShips[0] % width === 0)
     const rightWall = (enemyShips[enemyShips.length - 1] % width === width - 1)
     if (leftWall && direction === width) {
@@ -129,51 +139,61 @@ document.addEventListener('keydown', (event) => {
     for (let i = 0; i < enemyShips.length; i++) {
       cells[enemyShips[i]].classList.add('enemy-ship-image')
     }
-  }, 500)
+  }
+}, 500)
 
-  // firing enemy lasers
 
-  //randomly select enemy ship to fire laser
 
-  const enemyAttackSelectionInterval = setInterval(() => {
+// firing enemy lasers
+
+//randomly select enemy ship to fire laser
+
+const enemyAttackSelectionInterval = setInterval(() => {
+  if (gameStart === true) {
     enemyLaser = enemyShips[Math.floor(enemyShips.length * Math.random())]
     enemyLaser = enemyLaser + width
     cells[enemyLaser].classList.add('player-laser-image')
     enemyLaserFiring()
-  }, 2500)
+  }
+}, 2500)
 
-  // enemy laser firing
 
-  function enemyLaserFiring() {
-    const enemyLaserFiringInterval = setInterval(() => {
+// enemy laser firing
+
+function enemyLaserFiring() {
+  const enemyLaserFiringInterval = setInterval(() => {
+    if (!(cells[enemyLaser] === cells[player]) && !(enemyLaser > (width ** 2) - width - 1)) {
       cells[enemyLaser].classList.remove('player-laser-image')
       enemyLaser = enemyLaser + width
       cells[enemyLaser].classList.add('player-laser-image')
-      for (let i = 0; i < player.length; i++) {
-        if (cells[enemyLaser] === cells[player]) {
-          console.log('player dead!')
-          clearInterval(enemyAttackSelectionInterval)
-          cells[enemyLaser].classList.remove('player-laser-image')
-          gameOver()
-        } else if (enemyLaser > (width ** 2) - width - 1) {
-          console.log('remove laser')
-          cells[enemyLaser].classList.remove('player-laser-image')
-          clearInterval(enemyLaserFiringInterval)
-        }
-      }
-    }, 200)
-
-    // game over functions
-
-    function gameOver() {
-      clearInterval(enemyInterval)
-      console.log('GAME OVER')
-      cells[player].classList.remove('player-image')
-      gameStatus.innerHTML = 'Status: KIA'
-      gameOverText.innerHTML = 'GAME OVER'
     }
+    for (let i = 0; i < player.length; i++) {
+      // if laser hits player
+      if (cells[enemyLaser] === cells[player]) {
+        clearInterval(enemyAttackSelectionInterval)
+        cells[enemyLaser].classList.remove('player-laser-image')
+        gameOver()
+        // if laser hits floor
+      } else if (enemyLaser > (width ** 2) - width - 1) {
+        console.log('remove laser')
+        cells[enemyLaser].classList.remove('player-laser-image')
+        clearInterval(enemyLaserFiringInterval)
+      }
+    }
+  }, 200)
 
+  // game over functions
+
+  function gameOver() {
+    clearInterval(enemyInterval, enemyLaserFiringInterval)
+    console.log('GAME OVER')
+    cells[player].classList.remove('player-image')
+    gameStatus.innerHTML = 'Status: KIA'
+    gameOverText.innerHTML = 'GAME OVER'
+    gameStart = false
   }
-})
+
+}
+
 
 
