@@ -6,11 +6,11 @@ console.log('welcome to halo space invaders')
 const grid = document.querySelector('.grid')
 let gameStatus = document.getElementById('gamestatus')
 let gameOverText = document.getElementById('gameover')
-console.log(gameStatus)
 const width = 15
 let cells = []
 let player = []
-let playerLaser = []
+let playerLaser = null
+let laserCommand = false
 let enemyShips = []
 let enemyLaser = []
 let direction = 1
@@ -24,7 +24,6 @@ for (let i = 0; i < width ** 2; i++) {
 }
 
 let movePlayer = null
-let firePlayerLaser = null
 // use to initiate cutscenes & start game
 let gameStart = false
 
@@ -46,74 +45,68 @@ document.addEventListener('keydown', (event) => {
   //command to move left
   if (key === 'a' && !(player % width === 0)) {
     movePlayer = 'left'
+    cells[player].classList.remove('player-image')
+    player -= 1
+    cells[player].classList.add('player-image')
     //command to move right
   } else if (key === 'd' && !(player % width === width - 1)) {
     movePlayer = 'right'
+    cells[player].classList.remove('player-image')
+    player++
+    console.log(player)
+    cells[player].classList.add('player-image')
     // command to fire laser
-  } else if (key === ' ') {
-    firePlayerLaser = 'fire'
+  } else if (key === ' ' && laserCommand === false) {
+    laserCommand = true
+    laserFiring()
+
     //starts the game
   } else if (key === 's') {
     gameStart = true
-    console.log(gameStart)
-  } else {
-    event.preventDefault()
+    console.log('Game Start!')
   }
 
 
   // player movement logic
 
-  if (movePlayer === 'left') {
-    cells[player].classList.remove('player-image')
-    player -= 1
-    cells[player].classList.add('player-image')
-    movePlayer = null
-    console.log(player)
-  } else if (movePlayer === 'right') {
-    cells[player].classList.remove('player-image')
-    player += 1
-    cells[player].classList.add('player-image')
-    movePlayer = null
-    console.log(player)
-  }
-
-  if (firePlayerLaser === 'fire') {
+})
+// player firing laser
+function laserFiring() {
+  if (gameStart === true && laserCommand === true) {
     console.log('fire command recognised')
-    playerLaser = player - width
-    cells[playerLaser].classList.add('player-laser-image')
-    firePlayerLaser = null
-    laserFiring()
+    playerLaser = player
   }
 
+  const hitDetectionInterval = setInterval(() => {
 
-
-  // player firing laser
-
-  function laserFiring() {
-    setInterval(() => {
-
+    if (playerLaser !== cells[enemyShips]) {
       cells[playerLaser].classList.remove('player-laser-image')
       playerLaser = playerLaser - width
       cells[playerLaser].classList.add('player-laser-image')
+    } if (cells[playerLaser].classList.contains('enemy-ship-image')) {
+      cells[playerLaser].classList.remove('player-laser-image')
+      cells[playerLaser].classList.remove('enemy-ship-image')
+      console.log('ship hit')
+      enemyShips = enemyShips.filter((enemyShip) => {
+        return enemyShip !== playerLaser
+      })
+      playerLaser = null
+      laserCommand = false
+      clearInterval(hitDetectionInterval)
+    } else if (playerLaser < 15) {
+      cells[playerLaser].classList.remove('player-laser-image')
+      playerLaser = null
+      laserCommand = false
+      clearInterval(hitDetectionInterval)
+      console.log('player hit ceiling')
+    }
+  }, 200)
 
-      for (let i = 0; i < enemyShips.length; i++) {
-        if (cells[playerLaser] === cells[enemyShips[i]]) {
-          cells[playerLaser].classList.remove('player-laser-image')
-          enemyShips.splice(i, 1)
-          cells[enemyShips[i]].classList.remove('enemy-ship-image')
-          clearInterval()
+}
 
-        }
-      }
-
-    }, 200)
-  }
-})
 
 
 //check if enemy ships can move left, right or down
-
-
 
 const enemyInterval = setInterval(() => {
   if (gameStart === true) {
@@ -142,8 +135,6 @@ const enemyInterval = setInterval(() => {
   }
 }, 500)
 
-
-
 // firing enemy lasers
 
 //randomly select enemy ship to fire laser
@@ -168,19 +159,22 @@ function enemyLaserFiring() {
       cells[enemyLaser].classList.add('player-laser-image')
     }
     for (let i = 0; i < player.length; i++) {
-      // if laser hits player
-      if (cells[enemyLaser] === cells[player]) {
-        clearInterval(enemyAttackSelectionInterval)
-        cells[enemyLaser].classList.remove('player-laser-image')
-        gameOver()
-        // if laser hits floor
-      } else if (enemyLaser > (width ** 2) - width - 1) {
-        console.log('remove laser')
+
+      // if laser hits floor
+      if (enemyLaser > (width ** 2) - width - 1) {
+        console.log('enemy laser hit floor')
         cells[enemyLaser].classList.remove('player-laser-image')
         clearInterval(enemyLaserFiringInterval)
       }
     }
+    // if laser hits player
+    if (cells[enemyLaser] === cells[player]) {
+      clearInterval(enemyAttackSelectionInterval)
+      cells[enemyLaser].classList.remove('player-laser-image')
+      gameOver()
+    }
   }, 200)
+
 
   // game over functions
 
@@ -194,6 +188,7 @@ function enemyLaserFiring() {
   }
 
 }
+
 
 
 
