@@ -14,6 +14,7 @@ let laserCommand = false
 let enemyShips = []
 let enemyLaser = []
 let direction = 1
+let rounds = 3
 
 // creating the grid
 
@@ -36,6 +37,14 @@ cells[player].classList.add('player-image')
 
 enemyShips.push(47, 48, 49, 50, 51, 52, 53, 54, 55, 62, 63, 64, 65, 66, 67, 68, 69, 70)
 enemyShips.forEach(ship => cells[ship].classList.add('enemy-ship-image'))
+
+function enemyCount() {
+  if (enemyShips.length < 1) {
+    console.log('round 3 complete')
+  } else {
+    console.log(enemyShips.length)
+  }
+}
 
 //controls
 
@@ -86,7 +95,7 @@ function laserFiring() {
     } if (cells[playerLaser].classList.contains('enemy-ship-image')) {
       cells[playerLaser].classList.remove('player-laser-image')
       cells[playerLaser].classList.remove('enemy-ship-image')
-      console.log('ship hit')
+      enemyCount()
       enemyShips = enemyShips.filter((enemyShip) => {
         return enemyShip !== playerLaser
       })
@@ -100,7 +109,7 @@ function laserFiring() {
       clearInterval(hitDetectionInterval)
       console.log('player hit ceiling')
     }
-  }, 200)
+  }, 100)
 
 }
 
@@ -158,15 +167,15 @@ function enemyLaserFiring() {
       enemyLaser = enemyLaser + width
       cells[enemyLaser].classList.add('player-laser-image')
     }
-    for (let i = 0; i < player.length; i++) {
 
-      // if laser hits floor
-      if (enemyLaser > (width ** 2) - width - 1) {
-        console.log('enemy laser hit floor')
-        cells[enemyLaser].classList.remove('player-laser-image')
-        clearInterval(enemyLaserFiringInterval)
-      }
+
+    // if laser hits floor
+    if (enemyLaser > (width ** 2) - width - 1) {
+      console.log('enemy laser hit floor')
+      cells[enemyLaser].classList.remove('player-laser-image')
+      clearInterval(enemyLaserFiringInterval)
     }
+
     // if laser hits player
     if (cells[enemyLaser] === cells[player]) {
       clearInterval(enemyAttackSelectionInterval)
@@ -174,20 +183,22 @@ function enemyLaserFiring() {
       gameOver()
     }
   }, 200)
-
-
-  // game over functions
-
-  function gameOver() {
-    clearInterval(enemyInterval, enemyLaserFiringInterval)
-    console.log('GAME OVER')
-    cells[player].classList.remove('player-image')
-    gameStatus.innerHTML = 'Status: KIA'
-    gameOverText.innerHTML = 'GAME OVER'
-    gameStart = false
-  }
-
 }
+
+// game over functions
+
+function gameOver() {
+  clearInterval(enemyInterval)
+  console.log('GAME OVER')
+  cells[player].classList.remove('player-image')
+  gameStatus.innerHTML = 'Status: KIA'
+  gameOverText.innerHTML = 'GAME OVER'
+  gameStart = false
+}
+
+
+
+
 
 
 

@@ -1,11 +1,20 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 0;
+}
+
 .grid {
+  position: relative;
   display: flex;
   flex-direction: row;
-  border: 0px solid grey;
-  width: 600px;
-  height: 600px;
+  width: 40%;
+  height: 700px;
   flex-wrap: wrap;
-  margin-bottom:10px;
+  margin: 10px auto;
+  border: 1px solid white;
 }
 
 .grid div {
