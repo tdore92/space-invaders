@@ -39,11 +39,40 @@ enemyShips.push(47, 48, 49, 50, 51, 52, 53, 54, 55, 62, 63, 64, 65, 66, 67, 68, 
 enemyShips.forEach(ship => cells[ship].classList.add('enemy-ship-image'))
 
 function enemyCount() {
-  if (enemyShips.length < 1) {
-    console.log('round 3 complete')
-  } else {
-    console.log(enemyShips.length)
-  }
+  const shipCountInterval = setInterval(() => {
+    if (enemyShips.length < 1 && rounds === 3) {
+      enemyShips.forEach(ship => cells[ship].classList.remove('enemy-ship-image'))
+      roundTwo()
+      
+    } else if (enemyShips.length <= 1 && rounds === 2) {
+      enemyShips.forEach(ship => cells[ship].classList.remove('enemy-ship-image'))
+      roundThree()
+    } else if (enemyShips.length <= 1 && rounds === 1) {
+      victory()
+      clearInterval(shipCountInterval)
+    }
+  }, 100)
+}
+
+enemyCount()
+
+
+function roundTwo() {
+  gameStart = false
+  enemyShips.push(32, 33, 34, 35, 36, 37, 38, 39, 40, 47, 48, 49, 50, 51, 52, 53, 54, 55, 62, 63, 64, 65, 66, 67, 68, 69, 70)
+  enemyShips.forEach(ship => cells[ship].classList.add('enemy-ship-image'))
+  rounds = 2
+}
+
+function roundThree() {
+  gameStart = false
+  enemyShips.push(32, 33, 34, 35, 36, 37, 38, 39, 40, 47, 48, 49, 50, 51, 52, 53, 54, 55, 62, 63, 64, 65, 66, 67, 68, 69, 70)
+  enemyShips.forEach(ship => cells[ship].classList.add('enemy-ship-image'))
+  rounds = 1
+}
+
+function victory() {
+  console.log('VICTORY')  
 }
 
 //controls
@@ -95,7 +124,6 @@ function laserFiring() {
     } if (cells[playerLaser].classList.contains('enemy-ship-image')) {
       cells[playerLaser].classList.remove('player-laser-image')
       cells[playerLaser].classList.remove('enemy-ship-image')
-      enemyCount()
       enemyShips = enemyShips.filter((enemyShip) => {
         return enemyShip !== playerLaser
       })

@@ -7,7 +7,7 @@ body {
 }
 
 .grid {
-  position: relative;
+  position:relative;
   display: flex;
   flex-direction: row;
   width: 40%;
