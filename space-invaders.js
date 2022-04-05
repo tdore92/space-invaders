@@ -5,8 +5,9 @@ console.log('welcome to halo space invaders')
 
 const grid = document.querySelector('.grid')
 let gameStatus = document.getElementById('gamestatus')
-let gameOverText = document.getElementById('gameover')
-const width = 15
+let enemyLength = document.getElementById('enemylength')
+let roundStatus = document.getElementById('roundstatus')
+const width = 16
 let cells = []
 let player = []
 let playerLaser = null
@@ -15,6 +16,10 @@ let enemyShips = []
 let enemyLaser = []
 let direction = 1
 let rounds = 3
+const musicPlayer = document.getElementById('music')
+const sfxShootPlayer = document.getElementById('shoot')
+const sfxEnemyKilled = document.getElementById('enemykilled')
+const sfxPlayerKilled = document.getElementById('explosion')
 
 // creating the grid
 
@@ -30,13 +35,16 @@ let gameStart = false
 
 //add player to board
 
-player.push(215)
+player.push(247)
 cells[player].classList.add('player-image')
 
 //add enemy ships to board
 
-enemyShips.push(47, 48, 49, 50, 51, 52, 53, 54, 55, 62, 63, 64, 65, 66, 67, 68, 69, 70)
+enemyShips.push(35, 36, 37, 38, 39, 40, 41, 42, 43, 51, 52, 53, 54, 55, 56, 57, 58, 59)
 enemyShips.forEach(ship => cells[ship].classList.add('enemy-ship-image'))
+
+enemyLength.innerHTML = 'Enemies Remaining: ' + enemyShips.length
+roundStatus.innerHTML = 'Wave: ' + rounds
 
 function enemyCount() {
   const shipCountInterval = setInterval(() => {
@@ -44,10 +52,10 @@ function enemyCount() {
       enemyShips.forEach(ship => cells[ship].classList.remove('enemy-ship-image'))
       roundTwo()
       
-    } else if (enemyShips.length <= 1 && rounds === 2) {
+    } else if (enemyShips.length < 1 && rounds === 2) {
       enemyShips.forEach(ship => cells[ship].classList.remove('enemy-ship-image'))
       roundThree()
-    } else if (enemyShips.length <= 1 && rounds === 1) {
+    } else if (enemyShips.length < 1 && rounds === 1) {
       victory()
       clearInterval(shipCountInterval)
     }
@@ -59,20 +67,25 @@ enemyCount()
 
 function roundTwo() {
   gameStart = false
-  enemyShips.push(32, 33, 34, 35, 36, 37, 38, 39, 40, 47, 48, 49, 50, 51, 52, 53, 54, 55, 62, 63, 64, 65, 66, 67, 68, 69, 70)
+  enemyShips.push(19, 20, 21, 22, 23, 24, 25, 26, 27, 35, 36, 37, 38, 39, 40, 41, 42, 43, 51, 52, 53, 54, 55, 56, 57, 58, 59)
   enemyShips.forEach(ship => cells[ship].classList.add('enemy-ship-image'))
   rounds = 2
+  enemyLength.innerHTML = 'Enemies Remaining: ' + enemyShips.length
+  roundStatus.innerHTML = 'Wave: ' + rounds
 }
 
 function roundThree() {
   gameStart = false
-  enemyShips.push(32, 33, 34, 35, 36, 37, 38, 39, 40, 47, 48, 49, 50, 51, 52, 53, 54, 55, 62, 63, 64, 65, 66, 67, 68, 69, 70)
+  enemyShips.push(19, 20, 21, 22, 23, 24, 25, 26, 27, 35, 36, 37, 38, 39, 40, 41, 42, 43, 51, 52, 53, 54, 55, 56, 57, 58, 59)
   enemyShips.forEach(ship => cells[ship].classList.add('enemy-ship-image'))
   rounds = 1
+  enemyLength.innerHTML = 'Enemies Remaining: ' + enemyShips.length
+  roundStatus.innerHTML = 'Wave: ' + rounds
 }
 
 function victory() {
-  console.log('VICTORY')  
+  console.log('VICTORY')
+  gameStatus.innerHTML = 'Status: Mission Successful'  
 }
 
 //controls
@@ -102,6 +115,8 @@ document.addEventListener('keydown', (event) => {
   } else if (key === 's') {
     gameStart = true
     console.log('Game Start!')
+    musicPlayer.src = 'sounds/Halo Infinite Official Retro 8 Bit Soundtrack (Clean Version).mp3'
+    musicPlayer.play()
   }
 
 
@@ -113,6 +128,8 @@ function laserFiring() {
   if (gameStart === true && laserCommand === true) {
     console.log('fire command recognised')
     playerLaser = player
+    sfxShootPlayer.src = 'sounds/shoot.wav'
+    sfxShootPlayer.play()
   }
 
   const hitDetectionInterval = setInterval(() => {
@@ -124,11 +141,14 @@ function laserFiring() {
     } if (cells[playerLaser].classList.contains('enemy-ship-image')) {
       cells[playerLaser].classList.remove('player-laser-image')
       cells[playerLaser].classList.remove('enemy-ship-image')
+      sfxEnemyKilled.src = 'sounds/invaderkilled.wav'
+      sfxEnemyKilled.play()
       enemyShips = enemyShips.filter((enemyShip) => {
         return enemyShip !== playerLaser
       })
       playerLaser = null
       laserCommand = false
+      enemyLength.innerHTML = 'Enemies Remaining: ' + enemyShips.length
       clearInterval(hitDetectionInterval)
     } else if (playerLaser < 15) {
       cells[playerLaser].classList.remove('player-laser-image')
@@ -180,7 +200,7 @@ const enemyAttackSelectionInterval = setInterval(() => {
   if (gameStart === true) {
     enemyLaser = enemyShips[Math.floor(enemyShips.length * Math.random())]
     enemyLaser = enemyLaser + width
-    cells[enemyLaser].classList.add('player-laser-image')
+    cells[enemyLaser].classList.add('enemy-laser-image')
     enemyLaserFiring()
   }
 }, 2500)
@@ -191,24 +211,26 @@ const enemyAttackSelectionInterval = setInterval(() => {
 function enemyLaserFiring() {
   const enemyLaserFiringInterval = setInterval(() => {
     if (!(cells[enemyLaser] === cells[player]) && !(enemyLaser > (width ** 2) - width - 1)) {
-      cells[enemyLaser].classList.remove('player-laser-image')
+      cells[enemyLaser].classList.remove('enemy-laser-image')
       enemyLaser = enemyLaser + width
-      cells[enemyLaser].classList.add('player-laser-image')
+      cells[enemyLaser].classList.add('enemy-laser-image')
     }
 
 
     // if laser hits floor
     if (enemyLaser > (width ** 2) - width - 1) {
       console.log('enemy laser hit floor')
-      cells[enemyLaser].classList.remove('player-laser-image')
+      cells[enemyLaser].classList.remove('enemy-laser-image')
       clearInterval(enemyLaserFiringInterval)
     }
 
     // if laser hits player
     if (cells[enemyLaser] === cells[player]) {
       clearInterval(enemyAttackSelectionInterval)
-      cells[enemyLaser].classList.remove('player-laser-image')
+      cells[enemyLaser].classList.remove('enemy-laser-image')
       gameOver()
+      sfxPlayerKilled.src = '/sounds/explosion.wav'
+      sfxPlayerKilled.play()
     }
   }, 200)
 }
@@ -219,9 +241,9 @@ function gameOver() {
   clearInterval(enemyInterval)
   console.log('GAME OVER')
   cells[player].classList.remove('player-image')
-  gameStatus.innerHTML = 'Status: KIA'
-  gameOverText.innerHTML = 'GAME OVER'
+  gameStatus.innerHTML = 'Mission Status: KIA'
   gameStart = false
+  musicPlayer.pause()
 }
 
 
