@@ -13,6 +13,8 @@
 <audio id="shoot" src="./sounds/shoot.wav"></audio>
 <audio id="enemykilled" src="./sounds/invaderkilled.wav"></audio>
 <audio id="explosion" src="./sounds/explosion.wav"></audio>
+<audio id="trajectory" src="./sounds/cortana-nicetrajectory.wav"></audio>
+<audio id="dead" src="./sounds/cortana-dead.wav"></audio>
 <header>
 
 </header>
@@ -24,27 +26,32 @@
   </div>
   <div class="grid"></div>
   <div class="column2">
-    
+
     <div class="textColumn">
       <div><u>HUD</u></div>
-      <br/>
+      <br />
       <div id="gamestatus">Mission Status: Active</div>
       <div id="roundstatus"></div>
       <div id="enemylength"></div>
     </div>
     <div class="textColumn">
       <div>Remember Reach! Work with Cortana to repel the Covenant fleet. Survive three waves to win the game.</div>
-      <br/>
+      <br />
       <div><u>Controls</u></div>
-      <br/>
+      <br />
       <div>Arrow Keys = Move</div>
       <div>Spacebar = Fire</div>
       <div>'S' = Start Game</div>
     </div>
-    <img src="./images/halo logo pixel.png" />
-  
+    <div class="buttonsdiv">
+      <button class="buttonstyle" onclick="startGame()">Play</button>
+      <button class="buttonstyle" onclick="resetGame()">Reset</button>
+    </div>
+    
+
+
   </div>
-  
+
 
 </body>
 

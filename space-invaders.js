@@ -20,6 +20,7 @@ const musicPlayer = document.getElementById('music')
 const sfxShootPlayer = document.getElementById('shoot')
 const sfxEnemyKilled = document.getElementById('enemykilled')
 const sfxPlayerKilled = document.getElementById('explosion')
+const cortanaPlayerDead = document.getElementById('dead')
 
 // creating the grid
 
@@ -51,7 +52,6 @@ function enemyCount() {
     if (enemyShips.length < 1 && rounds === 3) {
       enemyShips.forEach(ship => cells[ship].classList.remove('enemy-ship-image'))
       roundTwo()
-      
     } else if (enemyShips.length < 1 && rounds === 2) {
       enemyShips.forEach(ship => cells[ship].classList.remove('enemy-ship-image'))
       roundThree()
@@ -72,6 +72,7 @@ function roundTwo() {
   rounds = 2
   enemyLength.innerHTML = 'Enemies Remaining: ' + enemyShips.length
   roundStatus.innerHTML = 'Wave: ' + rounds
+  gameStart = true
 }
 
 function roundThree() {
@@ -81,11 +82,12 @@ function roundThree() {
   rounds = 1
   enemyLength.innerHTML = 'Enemies Remaining: ' + enemyShips.length
   roundStatus.innerHTML = 'Wave: ' + rounds
+  gameStart = true
 }
 
 function victory() {
   console.log('VICTORY')
-  gameStatus.innerHTML = 'Status: Mission Successful'  
+  gameStatus.innerHTML = 'Status: Mission Successful'
 }
 
 //controls
@@ -112,20 +114,26 @@ document.addEventListener('keydown', (event) => {
     laserFiring()
 
     //starts the game
-  } else if (key === 's') {
-    gameStart = true
-    console.log('Game Start!')
-    musicPlayer.src = 'sounds/Halo Infinite Official Retro 8 Bit Soundtrack (Clean Version).mp3'
-    musicPlayer.play()
   }
-
 
   // player movement logic
 
 })
+
+function startGame() {
+  gameStart = true
+  console.log('Game Start!')
+  musicPlayer.src = 'sounds/Halo Infinite Official Retro 8 Bit Soundtrack (Clean Version).mp3'
+  musicPlayer.play()
+}
+
+function resetGame() {
+  location.reload()
+}
+
 // player firing laser
 function laserFiring() {
-  if (gameStart === true && laserCommand === true) {
+  if (laserCommand === true && gameStart === true) {
     console.log('fire command recognised')
     playerLaser = player
     sfxShootPlayer.src = 'sounds/shoot.wav'
@@ -160,8 +168,6 @@ function laserFiring() {
   }, 100)
 
 }
-
-
 
 //check if enemy ships can move left, right or down
 
@@ -244,9 +250,10 @@ function gameOver() {
   gameStatus.innerHTML = 'Mission Status: KIA'
   gameStart = false
   musicPlayer.pause()
+  cortanaPlayerDead.src = '/sounds/cortana-dead.wav'
+  cortanaPlayerDead.play()
+  ongoing = false
 }
-
-
 
 
 

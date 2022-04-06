@@ -87,3 +87,22 @@ body {
   height: 20%;
   width: 20%;
 }
+
+.buttonsdiv {
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonstyle {
+  height: 50px;
+  width:200px;
+  border: 5px solid greenyellow;
+  background-color: black;
+  color: greenyellow;
+  margin: 10px;
+  font-size: x-large;
+  border-radius: 2px;  
+}
