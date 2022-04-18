@@ -120,11 +120,20 @@ document.addEventListener('keydown', (event) => {
 
 })
 
+
+
 function startGame() {
+
   gameStart = true
   console.log('Game Start!')
-  musicPlayer.src = 'sounds/Halo Infinite Official Retro 8 Bit Soundtrack (Clean Version).mp3'
-  musicPlayer.play()
+  playMusic()
+}
+
+function playMusic() {
+  if (gameStart === true) {
+    musicPlayer.src = 'sounds/Halo Infinite Official Retro 8 Bit Soundtrack (Clean Version).mp3'
+    musicPlayer.play()
+  }
 }
 
 function resetGame() {
@@ -252,7 +261,6 @@ function gameOver() {
   musicPlayer.pause()
   cortanaPlayerDead.src = '/sounds/cortana-dead.wav'
   cortanaPlayerDead.play()
-  ongoing = false
 }
 
 
