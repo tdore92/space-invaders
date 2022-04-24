@@ -1,3 +1,3 @@
-Space Invaders ReadMe
+<h1>Halo: Space Invaders</h1>
 
-Play <a src="https://tdore92.github.io/space-invaders/" alt="spaceinvaders link">here</a>
+<div><a src="https://tdore92.github.io/space-invaders/" alt="spaceinvaders link">Play here</a></div>
