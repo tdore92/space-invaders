@@ -44,7 +44,7 @@ cells[player].classList.add('player-image')
 enemyShips.push(35, 36, 37, 38, 39, 40, 41, 42, 43, 51, 52, 53, 54, 55, 56, 57, 58, 59)
 enemyShips.forEach(ship => cells[ship].classList.add('enemy-ship-image'))
 
-enemyLength.innerHTML = 'Enemies Remaining: ' + enemyShips.length
+enemyLength.innerHTML = 'Seraphs Remaining: ' + enemyShips.length
 roundStatus.innerHTML = 'Wave: ' + rounds
 
 function enemyCount() {
@@ -70,7 +70,7 @@ function roundTwo() {
   enemyShips.push(19, 20, 21, 22, 23, 24, 25, 26, 27, 35, 36, 37, 38, 39, 40, 41, 42, 43, 51, 52, 53, 54, 55, 56, 57, 58, 59)
   enemyShips.forEach(ship => cells[ship].classList.add('enemy-ship-image'))
   rounds = 2
-  enemyLength.innerHTML = 'Enemies Remaining: ' + enemyShips.length
+  enemyLength.innerHTML = 'Seraphs Remaining: ' + enemyShips.length
   roundStatus.innerHTML = 'Wave: ' + rounds
   gameStart = true
 }

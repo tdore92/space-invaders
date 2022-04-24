@@ -1,18 +1,41 @@
+@font-face {
+  font-family: 'halo' ;
+  src: url('/fonts/Halo.ttf');
+}
+
 * {
   box-sizing: border-box;
+  font-family: halo;  
 }
 
 body {
-  height: 100vh;
+  background-image: url('./images/halo\ ring\ background.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.title-text-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
-  background-color: black;
-
+  flex-direction: column;
+  font-size: xx-large;
+  color: greenyellow;
 }
 
+.title-text {
+  width: 100%;
+  
+}
 
+.game-div {
+  height: 100vh;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  flex-direction: row; 
+}
 
 .grid {
   display: flex;
@@ -26,7 +49,52 @@ body {
   width: 6%;
   height: 7%;
   border: 1px solid greenyellow;
-  background-color:black
+  background-color: black;
+  opacity: 0.9;
+}
+
+.column2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 30vh;
+  width: 50vh;
+  font-size: 1.5em;
+}
+
+.textColumn, .buttonsdiv, .title-text-container {
+  margin: 1vh 0 1vh 0;
+}
+
+.textColumn {
+  color: greenyellow;
+  height: 100%;
+  width: 100%;
+  border: greenyellow 2px solid;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 10px;
+  background-color:black;
+  border-radius: 2px;
+  opacity: 0.9;
+}
+
+.buttonsdiv {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.buttonstyle {
+  height: 10vh;
+  width:40%;
+  border: 2px solid greenyellow;
+  background-color: black;
+  color: greenyellow;
+  border-radius: 2px;
+  font-size: 1.5em;
 }
 
 .player-image {
@@ -55,54 +123,4 @@ body {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-}
-
-.textColumn {
-  color: greenyellow;
-  height: 400px;
-  width: 400px;
-  border: greenyellow 5px solid;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  font-size: x-large;
-  padding: 10px;
-  background-color:black;
-  margin: 50px 0px 0px 5px;
-  border-radius: 2px;
-}
-
-.cortana {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 95%;
-  width: 15%;
-}
-
-.column2 {
-  display: flex;
-  flex-direction: column;
-  justify-content:center;
-  height: 20%;
-  width: 20%;
-}
-
-.buttonsdiv {
-  margin: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.buttonstyle {
-  height: 50px;
-  width:200px;
-  border: 5px solid greenyellow;
-  background-color: black;
-  color: greenyellow;
-  margin: 10px;
-  font-size: x-large;
-  border-radius: 2px;  
 }

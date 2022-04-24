@@ -1,58 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Halo Space Invaders</title>
+    <link rel="stylesheet" href="main.css" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Halo Space Invaders</title>
-  <link rel="stylesheet" href="main.css">
+    <script defer src="space-invaders.js"></script>
+  </head>
+  <audio
+    id="music"
+    src="./sounds/Halo Infinite Official Retro 8 Bit Soundtrack (Clean Version).mp3"
+  ></audio>
+  <audio id="shoot" src="./sounds/shoot.wav"></audio>
+  <audio id="enemykilled" src="./sounds/invaderkilled.wav"></audio>
+  <audio id="explosion" src="./sounds/explosion.wav"></audio>
+  <audio id="trajectory" src="./sounds/cortana-nicetrajectory.wav"></audio>
+  <audio id="dead" src="./sounds/cortana-dead.wav"></audio>
 
-  <script defer src="space-invaders.js"></script>
-</head>
-<audio id="music" src="./sounds/Halo Infinite Official Retro 8 Bit Soundtrack (Clean Version).mp3"></audio>
-<audio id="shoot" src="./sounds/shoot.wav"></audio>
-<audio id="enemykilled" src="./sounds/invaderkilled.wav"></audio>
-<audio id="explosion" src="./sounds/explosion.wav"></audio>
-<audio id="trajectory" src="./sounds/cortana-nicetrajectory.wav"></audio>
-<audio id="dead" src="./sounds/cortana-dead.wav"></audio>
-<header>
-
-</header>
-
-
-<body>
-  <div class="cortana">
-    <img src='./images/cortana the weapon.png' />
-  </div>
-  <div class="grid"></div>
-  <div class="column2">
-
-    <div class="textColumn">
-      <div><u>HUD</u></div>
-      <br />
-      <div id="gamestatus">Mission Status: Active</div>
-      <div id="roundstatus"></div>
-      <div id="enemylength"></div>
+  <body>
+    <div class="game-div">
+      <div class="grid"></div>
+      <div class="column2">
+        <div class="title-text-container">
+          <img class="title-text" src="./images/halo logo.png" />
+          <div>Space • Invaders</div>
+        </div>
+        <div class="textColumn">
+          <div><u>HUD</u></div>
+          <br />
+          <div id="gamestatus">Mission Status: Active</div>
+          <div id="roundstatus"></div>
+          <div id="enemylength"></div>
+        </div>
+        <div class="textColumn">
+          <div>
+            Remember Reach! Work with Cortana to repel the Covenant fleet.
+            Survive three waves to win the game.
+          </div>
+          <br />
+          <div><u>Controls</u></div>
+          <br />
+          <div>Arrow Keys = Move</div>
+          <div>Spacebar = Fire</div>
+        </div>
+        <div class="buttonsdiv">
+          <button class="buttonstyle" onclick="startGame()">Play</button>
+          <button class="buttonstyle" onclick="resetGame()">Reset</button>
+        </div>
+      </div>
     </div>
-    <div class="textColumn">
-      <div>Remember Reach! Work with Cortana to repel the Covenant fleet. Survive three waves to win the game.</div>
-      <br />
-      <div><u>Controls</u></div>
-      <br />
-      <div>Arrow Keys = Move</div>
-      <div>Spacebar = Fire</div>
-      <div>'S' = Start Game</div>
-    </div>
-    <div class="buttonsdiv">
-      <button class="buttonstyle" onclick="startGame()">Play</button>
-      <button class="buttonstyle" onclick="resetGame()">Reset</button>
-    </div>
-    
-
-
-  </div>
-
-
-</body>
-
+  </body>
 </html>
